@@ -1,3 +1,32 @@
+Reading reflections:
+    The main point is that AI cannot replace human work for most applications, and using it for highly important jobs can lead to issues later down that may not get notices at first. I agree with him about how AI can not replace most human work, but I'd go even further, and exclude some of what he says are good uses for AI, mainly image / video / music / text generation/. I feel like he runs into the same issues he points out near the begining, where he overestimates the ability of AI because he has very little experience in those subjects, other than as a consumer. Other than that, I dont really have any additional thoughts on this.
+
+
+Testing documentation:
+    I added a Teacher class. I did this mostly because having students with no teachers felt odd.
+    The files I modified are;  Manageable.java to include the methods to add and modify teachers, StudentManager.java to use the new functions in Manageable.java, and Main.java to make the interface able to use the new functions.
+    The Teacher class contains a list of students that are in the teachers course. you can add or remove students from these courses, and it will be saved in the data file.
+
+    My testing mostly comprised of trying the new class/methods a lot, as well as shorter tests for everything else. If I had more time, I would set up more thorough tests and check edge cases, but I am almost completely certain that my code works as intended.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 🎓 Student Management System
 
 A console-based **Student Management System** developed using Java.

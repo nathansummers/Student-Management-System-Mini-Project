@@ -4,6 +4,7 @@ import exception.DuplicateStudentException;
 import exception.StudentNotFoundException;
 import interfacee.Manageable;
 import model.Student;
+import model.Teacher;
 
 import java.io.*;
 import java.util.*;
@@ -11,9 +12,11 @@ import java.util.*;
 public class StudentManager implements Manageable {
 
     private final ArrayList<Student> students = new ArrayList<>();
+    private final ArrayList<Teacher> teachers = new ArrayList<>();
 
     // Student ID -> Student
     private final HashMap<String, Student> studentMap = new HashMap<>();
+    private final HashMap<String, Teacher> teacherMap = new HashMap<>();
 
     // Stores unique courses
     private final HashSet<String> courses = new HashSet<>();
@@ -84,6 +87,54 @@ public class StudentManager implements Manageable {
         }
     }
 
+    @Override
+    public void addTeacher() {
+
+        System.out.println("\n========== ADD TEACHER ==========");
+
+        String id = readNonEmptyString("Enter Teacher ID: ");
+
+        try {
+            if (teacherMap.containsKey(id)) {
+                throw new DuplicateStudentException(
+                        "Teacher ID already exists!"
+                );
+            }
+
+            String name = readNonEmptyString("Enter Name: ");
+
+            String course = readNonEmptyString("Enter Subject: ");
+
+            int age = readInt("Enter Age: ");
+
+            if (age < 5 || age > 100) {
+                System.out.println("Age must be between 5 and 100.");
+                return;
+            }
+
+
+            Teacher teacher = new Teacher(
+                    id,
+                    name,
+                    course,
+                    age
+
+            );
+
+            teachers.add(teacher);
+            teacherMap.put(id, teacher);
+            courses.add(course);
+
+            System.out.println("\nTeacher added successfully!");
+
+            saveToFile();
+
+        } catch (DuplicateStudentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+
     // ================= VIEW STUDENTS =================
 
     @Override
@@ -102,6 +153,24 @@ public class StudentManager implements Manageable {
 
         System.out.println("Total Students: " + students.size());
     }
+
+    @Override
+    public void viewTeachers() {
+
+        System.out.println("\n========== ALL TEACHERS ==========");
+
+        if (teachers.isEmpty()) {
+            System.out.println("No teacher records found.");
+            return;
+        }
+
+        for (Teacher teacher : teachers) {
+            teacher.displayDetails();
+        }
+
+        System.out.println("Total Teachers: " + teachers.size());
+    }
+
 
     // ================= SEARCH BY ID =================
 
@@ -225,6 +294,102 @@ public class StudentManager implements Manageable {
         saveToFile();
     }
 
+    @Override
+    public void updateTeacher() {
+
+        System.out.println("\n========== UPDATE STUDENT ==========");
+
+        String id = readNonEmptyString("Enter Teacher ID: ");
+
+        Teacher teacher = teacherMap.get(id);
+
+        if (teacher == null) {
+            System.out.println("Teacher not found.");
+            return;
+        }
+
+        System.out.println("\nCurrent Details:");
+        teacher.displayDetails();
+
+        String name = readNonEmptyString("Enter New Name: ");
+
+        String course = readNonEmptyString("Enter New Course: ");
+
+        int age = readInt("Enter New Age: ");
+
+        if (age < 5 || age > 100) {
+            System.out.println("Invalid age.");
+            return;
+        }
+
+
+        teacher.setName(name);
+        teacher.setSubject(course);
+        teacher.setAge(age);
+
+        courses.add(course);
+
+        System.out.println("\nTeacher updated successfully!");
+
+        saveToFile();
+    }
+
+
+    // ================= ADD/REMOVE STUDENT TO TEACHER =================
+
+    @Override
+    public void assignToTeacher()
+    {
+        System.out.println("\n========== ASSIGN STUDENT TO TEACHER ==========");
+
+        String studentId = readNonEmptyString("Enter Student ID: ");
+        Student student = studentMap.get(studentId);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        String teacherId = readNonEmptyString("Enter Teacher ID: ");
+        Teacher teacher = teacherMap.get(teacherId);
+        if (teacher == null) {
+            System.out.println("Teacher not found.");
+            return;
+        }
+ 
+        teacher.addStudent(student);
+
+        System.out.println("\nStudent assigned to Teacher successfully!");
+
+        saveToFile();
+    } 
+
+    @Override
+    public void removeFromTeacher()
+    {
+        System.out.println("\n========== REMOVE STUDENT FROM TEACHER ==========");
+
+        String studentId = readNonEmptyString("Enter Student ID: ");
+        Student student = studentMap.get(studentId);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        String teacherId = readNonEmptyString("Enter Teacher ID: ");
+        Teacher teacher = teacherMap.get(teacherId);
+        if (teacher == null) {
+            System.out.println("Teacher not found.");
+            return;
+        }
+
+        teacher.removeStudent(student);
+
+        System.out.println("\nStudent removed from Teacher successfully!");
+
+        saveToFile();
+    } 
+
+
     // ================= DELETE =================
 
     @Override
@@ -249,6 +414,13 @@ public class StudentManager implements Manageable {
 
         if (choice.equalsIgnoreCase("Y")) {
 
+            for (Teacher teacher : teachers)
+            {
+                if (teacher.getStudents().contains(student))
+                {
+                    teacher.removeStudent(student);
+                }
+            }
             students.remove(student);
             studentMap.remove(id);
 
@@ -262,6 +434,43 @@ public class StudentManager implements Manageable {
             System.out.println("Delete operation cancelled.");
         }
     }
+
+    @Override
+    public void deleteTeacher() {
+
+        System.out.println("\n========== DELETE STUDENT ==========");
+
+        String id = readNonEmptyString("Enter Teacher ID: ");
+
+        Teacher teacher = teacherMap.get(id);
+
+        if (teacher == null) {
+            System.out.println("Teacher not found.");
+            return;
+        }
+
+        teacher.displayDetails();
+
+        System.out.print("Are you sure you want to delete? (Y/N): ");
+
+        String choice = sc.nextLine();
+
+        if (choice.equalsIgnoreCase("Y")) {
+
+            teachers.remove(teacher);
+            teacherMap.remove(id);
+
+            rebuildCourses();
+
+            System.out.println("Teacher deleted successfully!");
+
+            saveToFile();
+
+        } else {
+            System.out.println("Delete operation cancelled.");
+        }
+    }
+
 
     // ================= STATISTICS =================
 
@@ -465,6 +674,24 @@ public class StudentManager implements Manageable {
                 writer.newLine();
             }
 
+            for (Teacher teacher : teachers) {
+                writer.write(teacher.toString());
+                writer.newLine();
+            }
+
+            // Each teacher's student list: ASSIGN|teacherId|studentId
+            for (Teacher teacher : teachers) {
+                for (Student student : teacher.getStudents()) {
+                    writer.write(
+                            "ASSIGN|"
+                                    + teacher.getTeacherId()
+                                    + "|"
+                                    + student.getStudentId()
+                    );
+                    writer.newLine();
+                }
+            }
+
             writer.close();
 
         } catch (IOException e) {
@@ -495,11 +722,18 @@ public class StudentManager implements Manageable {
 
             String line;
 
+            // Assignments are linked after all students and teachers are loaded
+            ArrayList<String[]> assignments = new ArrayList<>();
+
             while ((line = reader.readLine()) != null) {
 
                 String[] data = line.split("\\|");
 
-                if (data.length == 5) {
+                if (data.length == 3 && data[0].equals("ASSIGN")) {
+
+                    assignments.add(data);
+                }
+                else if (data.length == 5) {
 
                     String id = data[0];
                     String name = data[1];
@@ -520,13 +754,46 @@ public class StudentManager implements Manageable {
                     studentMap.put(id, student);
                     courses.add(course);
                 }
+                else if (data.length == 4)
+                {
+                    String id = data[0];
+                    String name = data[1];
+                    String course = data[2];
+                    int age = Integer.parseInt(data[3]);
+                    Teacher teacher =
+                            new Teacher(
+                                    id,
+                                    name,
+                                    course,
+                                    age
+                            );
+
+                    teachers.add(teacher);
+                    teacherMap.put(id, teacher);
+                    courses.add(course);
+                }
             }
 
             reader.close();
 
+            for (String[] data : assignments) {
+
+                Teacher teacher = teacherMap.get(data[1]);
+                Student student = studentMap.get(data[2]);
+
+                if (teacher != null && student != null) {
+                    teacher.addStudent(student);
+                }
+            }
+
             System.out.println(
                     students.size()
                             + " student records loaded."
+            );
+
+            System.out.println(
+                    teachers.size()
+                            + " teacher records loaded."
             );
 
         } catch (IOException | NumberFormatException e) {

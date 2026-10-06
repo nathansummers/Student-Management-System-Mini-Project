@@ -58,55 +58,79 @@ public class Main {
                 case 1:
                     manager.addStudent();
                     break;
-
+                
                 case 2:
-                    manager.viewStudents();
+                    manager.addTeacher();
                     break;
 
                 case 3:
-                    manager.searchById();
+                    manager.assignToTeacher();
                     break;
-
+                
                 case 4:
-                    manager.searchByName();
+                    manager.removeFromTeacher();
                     break;
 
                 case 5:
-                    manager.searchByCourse();
+                    manager.viewStudents();
                     break;
 
                 case 6:
-                    manager.updateStudent();
+                    manager.viewTeachers();
                     break;
 
                 case 7:
-                    manager.deleteStudent();
+                    manager.searchById();
                     break;
 
                 case 8:
-                    manager.displayStatistics();
+                    manager.searchByName();
                     break;
 
                 case 9:
-                    manager.displayTopStudents();
+                    manager.searchByCourse();
                     break;
 
                 case 10:
-                    manager.sortStudents();
+                    manager.updateStudent();
                     break;
 
                 case 11:
-                    manager.courseStatistics();
+                    manager.updateTeacher();
                     break;
 
                 case 12:
+                    manager.deleteStudent();
+                    break;
+                    
+                case 13:
+                    manager.deleteTeacher();
+                    break;
+
+                case 14:
+                    manager.displayStatistics();
+                    break;
+
+                case 15:
+                    manager.displayTopStudents();
+                    break;
+
+                case 16:
+                    manager.sortStudents();
+                    break;
+
+                case 17:
+                    manager.courseStatistics();
+                    break;
+
+                case 18:
                     manager.saveToFile();
                     System.out.println(
                             "Data saved successfully."
                     );
                     break;
 
-                case 13:
+                case 19:
 
                     manager.saveToFile();
 
@@ -131,7 +155,7 @@ public class Main {
 
                 default:
                     System.out.println(
-                            "Invalid choice! Please select 1-13."
+                            "Invalid choice! Please select 1-19."
                     );
             }
         }
@@ -146,18 +170,24 @@ public class Main {
         System.out.println("          STUDENT MANAGEMENT SYSTEM");
         System.out.println("==============================================");
         System.out.println("1.  Add Student");
-        System.out.println("2.  View All Students");
-        System.out.println("3.  Search Student by ID");
-        System.out.println("4.  Search Student by Name");
-        System.out.println("5.  Search Students by Course");
-        System.out.println("6.  Update Student");
-        System.out.println("7.  Delete Student");
-        System.out.println("8.  Display Statistics");
-        System.out.println("9.  Display Top Performing Students");
-        System.out.println("10. Sort Students");
-        System.out.println("11. Course-wise Student Count");
-        System.out.println("12. Save Data");
-        System.out.println("13. Exit");
+        System.out.println("2.  Add Teacher");
+        System.out.println("3.  Assign Student to Teacher");
+        System.out.println("4.  Remove Student from Teacher");
+        System.out.println("5.  View All Students");
+        System.out.println("6.  View All Teachers");
+        System.out.println("7.  Search Student by ID");
+        System.out.println("8.  Search Student by Name");
+        System.out.println("9.  Search Students by Course");
+        System.out.println("10.  Update Student");
+        System.out.println("11.  Update Teacher");
+        System.out.println("12.  Delete Student");
+        System.out.println("13.  Delete Teacher");
+        System.out.println("14.  Display Statistics");
+        System.out.println("15.  Display Top Performing Students");
+        System.out.println("16. Sort Students");
+        System.out.println("17. Course-wise Student Count");
+        System.out.println("18. Save Data");
+        System.out.println("19. Exit");
         System.out.println("==============================================");
     }
 }
