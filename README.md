@@ -6,8 +6,10 @@ Testing documentation:
     I added a Teacher class. I did this mostly because having students with no teachers felt odd.
     The files I modified are;  Manageable.java to include the methods to add and modify teachers, StudentManager.java to use the new functions in Manageable.java, and Main.java to make the interface able to use the new functions.
     The Teacher class contains a list of students that are in the teachers course. you can add or remove students from these courses, and it will be saved in the data file.
-
     My testing mostly comprised of trying the new class/methods a lot, as well as shorter tests for everything else. If I had more time, I would set up more thorough tests and check edge cases, but I am almost completely certain that my code works as intended.
+
+Where I used AI:
+    I only used AI to help edit the save system to save the Teachers list of students.
 
 
 
